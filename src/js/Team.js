@@ -4,27 +4,18 @@ export default class Team {
   }
 
   add(character) {
-    this.members.forEach((member) => {
-      if (member.name === character.name) {
-        throw new Error('Такой персонаж уже существует в команде');
-      }
-    });
-    return this.members.add(character);
+    if (this.members.has(character)) {
+      throw new Error('Такой персонаж уже существует в команде');
+    }
+    this.members.add(character);
   }
 
   addAll(...characters) {
     characters.forEach((item) => {
-      let check = false;
-      this.members.forEach((member) => {
-        if (member.name === item.name) {
-          check = true;
-        }
-      });
-      if (!check) {
+      if (!this.members.has(item)) {
         this.members.add(item);
       }
     });
-    return this.members;
   }
 
   toArray() {

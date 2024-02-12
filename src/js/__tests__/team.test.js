@@ -1,25 +1,36 @@
+import Character from '../Character';
 import Team from '../Team';
 
 test('test add method', () => {
-  const ch = { name: 'bo' };
+  const ch = new Character('bo');
   const team = new Team();
   const expected = new Set([{ name: 'bo' }]);
-  expect(team.add(ch)).toEqual(expected);
+  team.add(ch);
+  expect(team.members).toEqual(expected);
 });
 
 test('test add method error', () => {
   const team = new Team();
-  team.members = new Set([{ name: 'bo' }]);
-  const ch = { name: 'bo' };
+  const ch = new Character('bo');
+  team.add(ch);
   expect(() => team.add(ch)).toThrow(new Error('Такой персонаж уже существует в команде'));
 });
 
-test.each([
-  [{ name: 'bo' }, { name: 'zo' }, new Set([{ name: 'bo' }, { name: 'zo' }])],
-  [{ name: 'bo' }, { name: 'bo' }, new Set([{ name: 'bo' }])],
-])('test addAll method', (name1, name2, expected) => {
+test('test addAll method the same', () => {
   const team = new Team();
-  expect(team.addAll(name1, name2)).toEqual(expected);
+  const ch = new Character('bo');
+  team.addAll(ch, ch);
+  const expected = new Set([{ name: 'bo' }]);
+  expect(team.members).toEqual(expected);
+});
+
+test('test addAll method ', () => {
+  const team = new Team();
+  const ch1 = new Character('bo');
+  const ch2 = new Character('zo');
+  team.addAll(ch1, ch2);
+  const expected = new Set([{ name: 'bo' }, { name: 'zo' }]);
+  expect(team.members).toEqual(expected);
 });
 
 test.each([
